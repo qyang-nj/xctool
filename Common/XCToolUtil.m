@@ -769,7 +769,7 @@ NSString *OSXTestFrameworkDirectories()
   return [directories componentsJoinedByString:@":"];
 }
 
-NSString *TVOSTestFrameworkDirectories()
+NSString *TVOSTestFrameworkDirectories(void)
 {
   NSArray *directories = @[
     [XcodeDeveloperDirPath() stringByAppendingPathComponent:@"Library/Frameworks"],
