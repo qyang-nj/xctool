@@ -46,6 +46,8 @@ NSArray *TestsFromSuite(id testSuite)
   return tests;
 }
 
+#if 0
+
 // Key used by objc_setAssociatedObject
 static int TestDescriptionKey;
 
@@ -138,3 +140,9 @@ void ApplyDuplicateTestNameFix(NSString *testProbeClassName, NSString *testSuite
                                     @selector(allTests),
                                     (IMP)TestSuite_allTests);
 }
+
+#else
+
+void ApplyDuplicateTestNameFix(NSString *testProbeClassName, NSString *testSuiteClassName) {}
+
+#endif
