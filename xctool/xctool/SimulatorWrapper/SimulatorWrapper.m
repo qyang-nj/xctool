@@ -64,13 +64,6 @@ static const NSString * kOptionsWaitForDebuggerKey = @"wait_for_debugger";
   mkfifoResult = mkfifo([otestShimOutputPath UTF8String], S_IWUSR | S_IRUSR | S_IRGRP);
   NSCAssert(mkfifoResult == 0, @"Failed to create a fifo at path: %@", otestShimOutputPath);
 
-  // intercept stdout, stderr and post as simulator-output events
-  NSString *simStdoutPath = MakeTempFileInDirectoryWithPrefix(device.dataPath, @"tmp/stdout_err");
-  NSString *simStdoutRelativePath = [simStdoutPath substringFromIndex:device.dataPath.length];
-  [[NSFileManager defaultManager] removeItemAtPath:simStdoutPath error:nil];
-  mkfifoResult = mkfifo([simStdoutPath UTF8String], S_IWUSR | S_IRUSR | S_IRGRP);
-  NSCAssert(mkfifoResult == 0, @"Failed to create a fifo at path: %@", simStdoutPath);
-
   NSMutableDictionary *environmentEdited = [environment mutableCopy];
   environmentEdited[kOtestShimStdoutFilePath] = otestShimOutputPath;
   
@@ -81,10 +74,6 @@ static const NSString * kOptionsWaitForDebuggerKey = @"wait_for_debugger";
   NSDictionary *options = @{
     kOptionsArgumentsKey: arguments,
     kOptionsEnvironmentKey: environmentEdited,
-    // stdout and stderr is forwarded to the same pipe
-    // that way xctool preserves an order of printed lines
-    kOptionsStdoutKey: simStdoutRelativePath,
-    kOptionsStderrKey: simStdoutRelativePath,
     kOptionsWaitForDebuggerKey: @"0",
   };
 
@@ -139,10 +128,9 @@ static const NSString * kOptionsWaitForDebuggerKey = @"wait_for_debugger";
   dispatch_resume(source);
 
   int otestShimOutputReadFD = open([otestShimOutputPath UTF8String], O_RDONLY);
-  int simStdoutReadFD = open([simStdoutPath UTF8String], O_RDONLY);
-  int fildes[2] = {simStdoutReadFD, otestShimOutputReadFD};
+  int fildes[1] = {otestShimOutputReadFD};
   dispatch_queue_t feedQueue = dispatch_queue_create("com.facebook.simulator_wrapper.feed", DISPATCH_QUEUE_SERIAL);
-  ReadOutputsAndFeedOuputLinesToBlockOnQueue(fildes, 2, ^(int fd, NSString *line) {
+  ReadOutputsAndFeedOuputLinesToBlockOnQueue(fildes, 1, ^(int fd, NSString *line) {
     if (fd != otestShimOutputReadFD) {
       NSDictionary *event = EventDictionaryWithNameAndContent(
         kReporter_Events_SimulatorOuput,
