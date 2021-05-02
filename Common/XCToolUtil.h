@@ -232,6 +232,11 @@ NSString *SystemPaths(void);
 NSString *IOSTestFrameworkDirectories(void);
 
 /**
+ * Returns absolute paths to directories with iOS test libraries in the form of `path1:path2:path3`.
+ */
+NSString *IOSTestLibraryDirectories(void);
+
+/**
  * Returns absolute paths to directories with OS X test frameworks in the form of `path1:path2:path3`.
  */
 NSString *OSXTestFrameworkDirectories(void);

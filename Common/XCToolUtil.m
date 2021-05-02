@@ -760,6 +760,15 @@ NSString *IOSTestFrameworkDirectories()
   return [directories componentsJoinedByString:@":"];
 }
 
+NSString *IOSTestLibraryDirectories()
+{
+  NSArray *directories = @[
+    // Path for libXCTestSwiftSupport.dylib
+    [XcodeDeveloperDirPath() stringByAppendingPathComponent:@"Platforms/iPhoneSimulator.platform/Developer/usr/lib"],
+  ];
+  return [directories componentsJoinedByString:@":"];
+}
+
 NSString *OSXTestFrameworkDirectories()
 {
   NSArray *directories = @[
@@ -797,6 +806,7 @@ NSMutableDictionary *IOSTestEnvironment(NSDictionary *buildSettings)
     @"DYLD_FRAMEWORK_PATH" : paths,
     @"DYLD_LIBRARY_PATH" : paths,
     @"DYLD_FALLBACK_FRAMEWORK_PATH" : IOSTestFrameworkDirectories(),
+    @"DYLD_FALLBACK_LIBRARY_PATH" : IOSTestLibraryDirectories(),
   } mutableCopy];
 }
 
