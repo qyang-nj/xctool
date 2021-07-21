@@ -22,6 +22,7 @@
 #import "TestRunState.h"
 #import "XcodeBuildSettings.h"
 #import "XCTestConfiguration.h"
+#import "XCTest.h"
 #import "XCToolUtil.h"
 
 static NSString * const kEnvVarPassThroughPrefix = @"XCTOOL_TEST_ENV_";
@@ -361,7 +362,12 @@ static NSString * const kEnvVarPassThroughPrefix = @"XCTOOL_TEST_ENV_";
 
   Class XCTestIdentifierSetClass = NSClassFromString(@"XCTTestIdentifierSet");
   if (XCTestIdentifierSetClass) {
-    id identifierSet = [[XCTestIdentifierSetClass alloc] initWithSet:[NSSet setWithArray:testCasesToSkip]];
+    NSMutableArray *skippedIdentifiers = [NSMutableArray arrayWithCapacity:[testCasesToSkip count]];
+    [testCasesToSkip enumerateObjectsUsingBlock:^(NSString *str, NSUInteger idx, BOOL *stop) {
+      XCTTestIdentifier *testIdentifier = [[XCTTestIdentifier alloc] initWithStringRepresentation:str];
+      [skippedIdentifiers addObject:testIdentifier];
+    }];
+    id identifierSet = [[XCTestIdentifierSetClass alloc] initWithArray:skippedIdentifiers];
     configuration.testsToSkip = identifierSet;
   } else {
     configuration.testsToSkip = [NSSet setWithArray:testCasesToSkip];

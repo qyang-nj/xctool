@@ -57,9 +57,9 @@
   _methodName = [parts[1] copy];
 }
 
-- (NSString *)testName
+- (NSString *)testIdentifier
 {
-  return [NSString stringWithFormat:@"-[%@ %@]", _className, _methodName];
+  return [NSString stringWithFormat:@"%@/%@", _className, _methodName];
 }
 
 - (BOOL)isRunning
@@ -125,7 +125,7 @@
     [self stateBeginTest];
     [self publishWithEvent:
       EventDictionaryWithNameAndContent(kReporter_Events_BeginTest, @{
-        kReporter_EndTest_TestKey:[self testName],
+        kReporter_EndTest_TestKey:[self testIdentifier],
         kReporter_EndTest_ClassNameKey:_className,
         kReporter_EndTest_MethodNameKey:_methodName,
     })];
@@ -138,7 +138,7 @@
     [self stateEndTest:NO result:@"error"];
     [self publishWithEvent:
       EventDictionaryWithNameAndContent(kReporter_Events_EndTest, @{
-        kReporter_EndTest_TestKey:[self testName],
+        kReporter_EndTest_TestKey:[self testIdentifier],
         kReporter_EndTest_ClassNameKey:_className,
         kReporter_EndTest_MethodNameKey:_methodName,
         kReporter_EndTest_SucceededKey:@(_isSuccessful),

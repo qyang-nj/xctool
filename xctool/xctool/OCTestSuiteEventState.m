@@ -187,7 +187,7 @@
 - (OCTestEventState *)getTestWithTestName:(NSString *)name
 {
   NSUInteger idx = [_tests indexOfObjectPassingTest:^(OCTestEventState *test, NSUInteger index, BOOL *stop) {
-    return [[test testName] isEqualToString:name];
+    return [[test testIdentifier] isEqualToString:name];
   }];
 
   if (idx == NSNotFound) {
