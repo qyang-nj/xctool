@@ -245,7 +245,7 @@
                               @"likely responsible for the crash.\n"
                               @"\n"
                               @"%@",
-                              [_previousTestState testName],
+                              [_previousTestState testIdentifier],
                               [self collectCrashReports:_crashReportsAtStart]];
   fakeTestOutput = [fakeTestOutput stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 

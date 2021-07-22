@@ -63,6 +63,9 @@
 		CCEF651C1F5CD57800283B7E /* OtestQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = CC12CBF118E54A1400AA76E9 /* OtestQuery.h */; };
 		CD66612D175D1A890057DF4D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9049011756C5B1006CF16D /* Foundation.framework */; };
 		CD9049021756C5B1006CF16D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9049011756C5B1006CF16D /* Foundation.framework */; };
+		D442ACCC26A76AC700EEF6DF /* XCTest.h in Headers */ = {isa = PBXBuildFile; fileRef = D442ACCB26A76AC700EEF6DF /* XCTest.h */; };
+		D442ACCD26A76AC700EEF6DF /* XCTest.h in Headers */ = {isa = PBXBuildFile; fileRef = D442ACCB26A76AC700EEF6DF /* XCTest.h */; };
+		D442ACCE26A76AC700EEF6DF /* XCTest.h in Headers */ = {isa = PBXBuildFile; fileRef = D442ACCB26A76AC700EEF6DF /* XCTest.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -135,6 +138,7 @@
 		CD9049011756C5B1006CF16D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CD90490F1756C685006CF16D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		CD9049151756CDF4006CF16D /* otest-query-ios.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "otest-query-ios.xcconfig"; sourceTree = "<group>"; };
+		D442ACCB26A76AC700EEF6DF /* XCTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XCTest.h; path = ../Common/XCTest.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +227,7 @@
 				AA318BE317E9A8C000BF159E /* TestingFramework.h */,
 				AA318BE517E9AA7400BF159E /* TestingFramework.m */,
 				28EC25F9184EAA680061C3B2 /* XcodeRequiredVersion.m */,
+				D442ACCB26A76AC700EEF6DF /* XCTest.h */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -310,6 +315,7 @@
 				CC8D774C19660E230035CC60 /* NSInvocationInSetFix.h in Headers */,
 				AA318BE417E9A8C000BF159E /* TestingFramework.h in Headers */,
 				2887CC35181DDB5F00B0D049 /* Swizzle.h in Headers */,
+				D442ACCD26A76AC700EEF6DF /* XCTest.h in Headers */,
 				2887CC3B181E0D8600B0D049 /* DuplicateTestNameFix.h in Headers */,
 				CC12CBF318E54A1400AA76E9 /* OtestQuery.h in Headers */,
 			);
@@ -319,6 +325,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D442ACCE26A76AC700EEF6DF /* XCTest.h in Headers */,
 				CC8D774D19660E230035CC60 /* NSInvocationInSetFix.h in Headers */,
 				CC12CBF418E54A1400AA76E9 /* OtestQuery.h in Headers */,
 			);
@@ -331,6 +338,7 @@
 				CCEF65181F5CD57800283B7E /* NSInvocationInSetFix.h in Headers */,
 				CCEF65191F5CD57800283B7E /* TestingFramework.h in Headers */,
 				CCEF651A1F5CD57800283B7E /* Swizzle.h in Headers */,
+				D442ACCC26A76AC700EEF6DF /* XCTest.h in Headers */,
 				CCEF651B1F5CD57800283B7E /* DuplicateTestNameFix.h in Headers */,
 				CCEF651C1F5CD57800283B7E /* OtestQuery.h in Headers */,
 			);

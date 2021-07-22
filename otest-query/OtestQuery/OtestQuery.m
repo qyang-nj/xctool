@@ -26,6 +26,7 @@
 #import "ParseTestName.h"
 #import "SenIsSuperclassOfClassPerformanceFix.h"
 #import "TestingFramework.h"
+#import "XCTest.h"
 
 @implementation OtestQuery
 
@@ -47,6 +48,19 @@
   }
 
   return names;
+}
+
++ (NSArray *)testIdentifiersFromSuite:(id)testSuite
+{
+  NSMutableArray *identifiers = [NSMutableArray array];
+
+  for (id test in TestsFromSuite(testSuite)) {
+    id identifier = [test valueForKey:@"_identifier"];
+    NSAssert(identifier != nil, @"Can't get identifier for test: %@", test);
+    [identifiers addObject:identifier];
+  }
+
+  return identifiers;
 }
 
 + (void)queryTestBundlePath:(NSString *)testBundlePath
@@ -118,15 +132,23 @@
   id allTestsSuite = [testSuiteClass performSelector:@selector(allTests)];
   NSCAssert(allTestsSuite, @"Should have gotten a test suite from allTests");
 
-  NSArray *fullTestNames = [self testNamesFromSuite:allTestsSuite];
   NSMutableArray *testNames = [NSMutableArray array];
 
-  for (NSString *fullTestName in fullTestNames) {
-    NSString *className = nil;
-    NSString *methodName = nil;
-    ParseClassAndMethodFromTestName(&className, &methodName, fullTestName);
+  if (NSClassFromString(@"XCTTestIdentifier")) { // Xcode 12.5 +
+    NSArray *identifiers = [self testIdentifiersFromSuite:allTestsSuite];
+    for (XCTTestIdentifier *identifier in identifiers) {
+      [testNames addObject:identifier.identifierString];
+    }
+  } else {
+    NSArray *fullTestNames = [self testNamesFromSuite:allTestsSuite];
 
-    [testNames addObject:[NSString stringWithFormat:@"%@/%@", className, methodName]];
+    for (NSString *fullTestName in fullTestNames) {
+      NSString *className = nil;
+      NSString *methodName = nil;
+      ParseClassAndMethodFromTestName(&className, &methodName, fullTestName);
+
+      [testNames addObject:[NSString stringWithFormat:@"%@/%@", className, methodName]];
+    }
   }
 
   [testNames sortUsingSelector:@selector(compare:)];

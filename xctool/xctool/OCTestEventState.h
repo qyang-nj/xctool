@@ -36,7 +36,7 @@
 
 - (instancetype)initWithInputName:(NSString *)name;
 
-- (NSString *)testName;
+- (NSString *)testIdentifier;
 - (void)stateBeginTest;
 - (void)stateEndTest:(BOOL)successful result:(NSString *)result;
 - (void)stateEndTest:(BOOL)successful result:(NSString *)result duration:(double)duration;
