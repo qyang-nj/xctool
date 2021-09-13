@@ -385,6 +385,12 @@
             ReferencedContainer = "container:xctool.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-sdk iphonesimulator -destination &apos;platform=iOS Simulator,OS=latest,name=iPhone 12&apos; run-tests -logicTest /Users/qingyang/AirSource/apps/buck-out/gen/ios/foundations/StringFoundation/StringFoundationTests#apple-test-bundle,dwarf-and-dsym,no-include-frameworks,no-linkermap/StringFoundationTests.xctest"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

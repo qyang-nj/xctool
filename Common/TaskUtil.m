@@ -200,6 +200,22 @@ void ReadOutputsAndFeedOuputLinesToBlockOnQueue(
     NSCAssert(info->io != NULL, @"Failed to create IO channel for fb [%d]", fd);
     dispatch_io_set_low_water(info->io, 1);
     dispatch_io_read(info->io, 0, SIZE_MAX, ioQueue, ^(bool done, dispatch_data_t data, int error) {
+
+      if (info->fd == 14) {
+        const char *buffer_ptr;
+        size_t size_ptr;
+        dispatch_data_t config = dispatch_data_create_map(data, (const void **)&buffer_ptr, &size_ptr);
+
+        if (buffer_ptr != NULL) {
+          char buffer[10240];
+          memset(buffer, 0, 10240);
+          strlcpy(buffer, buffer_ptr, size_ptr);
+          printf("$$$ %s\n", buffer);
+
+          dispatch_release(config);
+        }
+      }
+
       if (error == ECANCELED) {
         return;
       }
@@ -391,18 +407,21 @@ void LaunchTaskAndFeedSimulatorOutputAndOtestShimEventsToBlock(
   int mkfifoResult = mkfifo([otestShimOutputFilePath UTF8String], S_IWUSR | S_IRUSR | S_IRGRP);
   NSCAssert(mkfifoResult == 0, @"Failed to create a fifo at path: %@", otestShimOutputFilePath);
 
+  NSLog(@"Output File: %@", otestShimOutputFilePath);
+
   /*
    * We need to launch task before trying to open the pipe for reading. Once
    * otest-shim opens the pipe for writing we will get `otestShimOutputReadFD`.
    * If open the pipe with `O_NONBLOCK` `dispatch_io_read` returns
    * `done` immideately.
    */
-  LaunchTaskAndMaybeLogCommand(task, description);
+//  LaunchTaskAndMaybeLogCommand(task, description);
 
   // intercept otest-shim events and post as-is
   int otestShimOutputReadFD = open([otestShimOutputFilePath UTF8String], O_RDONLY);
 
   int fildes[2] = {stdoutReadFd, otestShimOutputReadFD};
+  printf("$$$ FD: %d %d\n", stdoutReadFd, otestShimOutputReadFD);
   NSString *feedQueueName = [NSString stringWithFormat:@"com.facebook.events.feed.queue.%f.%d", [[NSDate date] timeIntervalSince1970], fildes[1]];
   dispatch_queue_t feedQueue = dispatch_queue_create([feedQueueName UTF8String], DISPATCH_QUEUE_SERIAL);
   ReadOutputsAndFeedOuputLinesToBlockOnQueue(fildes, 2, ^(int fd, NSString *line) {
