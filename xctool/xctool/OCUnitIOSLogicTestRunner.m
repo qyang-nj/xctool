@@ -98,8 +98,7 @@ static NSString * const XCTOOL_TMPDIR = @"TMPDIR";
   }];
 
   // specify a path where to write otest-shim events
-  NSString *outputPath = MakeTempFileWithPrefix(@"output");
-  [[NSFileManager defaultManager] removeItemAtPath:outputPath error:nil];
+  NSString *outputPath = [TemporaryDirectoryForAction() stringByAppendingPathComponent:@"otest-shim-events"];
   env[@"OTEST_SHIM_STDOUT_FILE"] = outputPath;
   *otestShimOutputPath = outputPath;
 
