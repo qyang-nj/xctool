@@ -97,8 +97,14 @@ static NSString * const XCTOOL_TMPDIR = @"TMPDIR";
     @"NSUnbufferedIO" : @"YES",
   }];
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+  // tempnam is deprecated, but there is no alternative to just generate the name without actually creating the file.
+  const char *output = tempnam([TemporaryDirectoryForAction() UTF8String], "otest-shim-events_");
+#pragma clang diagnostic pop
   // specify a path where to write otest-shim events
-  NSString *outputPath = [TemporaryDirectoryForAction() stringByAppendingPathComponent:@"otest-shim-events"];
+  NSString *outputPath = [NSString stringWithUTF8String:output];
   env[@"OTEST_SHIM_STDOUT_FILE"] = outputPath;
   *otestShimOutputPath = outputPath;
 
