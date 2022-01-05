@@ -35,6 +35,9 @@ NSTask *CreateTaskForSimulatorExecutable(NSString *sdkName,
       [sdkName hasPrefix:@"appletvsimulator"]) {
     SimDevice *simulatedDevice = [simulatorInfo simulatedDevice];
     [taskArgs addObject: @"spawn"];
+    // Airbnb: force to run x86_64 xctest on M1 machine.
+    // This breaks test bundles that are built natively for arm64, but we don't have any of them for now.
+    [taskArgs addObject: @"--arch=x86_64"];
     if (ToolchainIsXcode10OrBetter() && [simulatedDevice state] != SimDeviceStateBooted) {
       // If simulator is not booted, pass --standalone option, which is required by Xcode 11.
       [taskArgs addObject: @"--standalone"];
