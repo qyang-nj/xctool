@@ -803,8 +803,8 @@ NSMutableDictionary *IOSTestEnvironment(NSDictionary *buildSettings)
 {
   NSString *paths = AllFrameworkAndLiraryPathsInBuildSettings(buildSettings);
   return [@{
-    @"DYLD_FRAMEWORK_PATH" : paths,
-    @"DYLD_LIBRARY_PATH" : paths,
+    @"DYLD_FRAMEWORK_PATH" : [NSString stringWithFormat:@"%@:%@", paths, IOSTestFrameworkDirectories()],
+    @"DYLD_LIBRARY_PATH" : [NSString stringWithFormat:@"%@:%@", paths, IOSTestLibraryDirectories()],
     @"DYLD_FALLBACK_FRAMEWORK_PATH" : IOSTestFrameworkDirectories(),
     @"DYLD_FALLBACK_LIBRARY_PATH" : IOSTestLibraryDirectories(),
   } mutableCopy];
