@@ -181,12 +181,23 @@ static void XCToolLog_testSuiteDidStop(NSDictionary *json)
   }
 }
 
+static XCTTestIdentifier *GetIdentifier(id test)
+{
+  id identifier = nil;
+  if ([test respondsToSelector:@selector(_identifier)]) {
+    identifier = [test performSelector:@selector(_identifier)];
+  } else if ([test respondsToSelector:@selector(_xctTestIdentifier)] ){
+    identifier = [test performSelector:@selector(_xctTestIdentifier)];
+  }
+  return identifier;
+}
+
 #pragma mark - testCaseDidStart
 
 static void XCTestLog_testCaseDidStart(id self, SEL sel, XCTestCaseRun *run)
 {
-  XCTTestIdentifier *testIdentifier = [[run test] valueForKey:@"_identifier"];
-  XCToolLog_testCaseDidStart(testIdentifier);
+  id identifier = GetIdentifier([run test]);
+  XCToolLog_testCaseDidStart(identifier);
 }
 
 static void XCTestLog_testCaseWillStart(id self, SEL sel, XCTestCase *testCase)
@@ -197,8 +208,8 @@ static void XCTestLog_testCaseWillStart(id self, SEL sel, XCTestCase *testCase)
 static void SenTestLog_testCaseDidStart(id self, SEL sel, NSNotification *notification)
 {
   SenTestRun *run = [notification run];
-  XCTTestIdentifier *testIdentifier = [[run test] valueForKey:@"_identifier"];
-  XCToolLog_testCaseDidStart(testIdentifier);
+  id identifier = GetIdentifier([run test]);
+  XCToolLog_testCaseDidStart(identifier);
 }
 
 static void XCToolLog_testCaseDidStart(XCTTestIdentifier *testIdentifier)
